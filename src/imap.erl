@@ -690,13 +690,12 @@ cmd_to_data(InternalCmd) ->
     iodata().
 cmd_to_list({login, {plain, Username, Password}}) ->
     [<<"LOGIN">>, Username, Password];
-cmd_to_list({login, {xoauth2, Account, {RefreshToken, RefreshUrl}}}) ->
+cmd_to_list({login, {xoauth2, _, {_, _}} = RefreshAuth}) ->
     %% @todo wrap up the req
-    case httpc:request(get, {RefreshUrl, RefreshToken, []}, [], []) of
-        ok -> ok
-    end,
-    AccessToken = <<>>,
-    cmd_to_list({login, {xoauth2, Account, AccessToken}});
+    case switchboard_oauth:refresh_to_access_token(RefreshAuth) of
+        {ok, AccessAuth} ->
+            cmd_to_list({login, AccessAuth})
+    end;
 cmd_to_list({login, {xoauth2, Account, AccessToken}}) ->
     Encoded = base64:encode(<<"user=", Account/binary,
                              "auth=Bearer ", AccessToken/binary,
