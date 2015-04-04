@@ -62,7 +62,8 @@
          clean_list/1,
          get_parts_by_type/2, get_parts_by_type/3,
          auth_to_account/1,
-         auth_to_props/1]).
+         auth_to_props/1,
+         start_app/1]).
 
 
 %% Callback exports

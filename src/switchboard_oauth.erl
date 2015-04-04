@@ -4,7 +4,7 @@
 
 -module(switchboard_oauth).
 
--export([refresh_to_access_token/1, refresh_to_access_token/2]).
+-export([refresh_to_access_token/1, refresh_to_access_token/3]).
 
 
 %%==============================================================================
